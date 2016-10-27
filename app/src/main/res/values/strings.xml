@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Tumblr App</string>
+    <string name="username">Username</string>
+    <string name="main_activity_username">Username</string>
+    <string name="main_activity_send">Send</string>
+    <string name="no_tittle">No Tittle</string>
+
+
+    <string-array name="type_arrays">
+        <item name= "all">All</item>
+        <item name= "text">Text</item>
+        <item name= "quote">Quote</item>
+        <item name= "photo">Photo</item>
+        <item name= "link">Link</item>
+        <item name= "chat">Chat</item>
+        <item name= "video">Video</item>
+        <item name= "audio">Audio</item>
+    </string-array>
+</resources>
