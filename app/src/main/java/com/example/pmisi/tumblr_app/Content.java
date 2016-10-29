@@ -11,13 +11,14 @@ class Content implements Parcelable{
     private String date;
     private String tittle;
     private Bitmap bitmap;
+    private ArrayList<String> contentList;
+    private ArrayList<String> tagsList;
 
     protected Content(Parcel in) {
         url = in.readString();
         type = in.readString();
         date = in.readString();
         tittle = in.readString();
-        text = in.readString();
         contentList = in.createStringArrayList();
         tagsList = in.createStringArrayList();
     }
@@ -66,15 +67,8 @@ class Content implements Parcelable{
     public String getUrl() {
         return url;
     }
-    public String getText() {
-        return text;
-    }
-    public void setText(String text) {
-        this.text = text;
-    }
-    private String text;
-    private ArrayList<String> contentList;
-    private ArrayList<String> tagsList;
+
+
 
 
     public static final Creator<Content> CREATOR = new Parcelable.Creator<Content>() {
@@ -100,7 +94,6 @@ class Content implements Parcelable{
         dest.writeString(type);
         dest.writeString(date);
         dest.writeString(tittle);
-        dest.writeString(text);
         dest.writeStringList(contentList);
         dest.writeStringList(tagsList);
     }

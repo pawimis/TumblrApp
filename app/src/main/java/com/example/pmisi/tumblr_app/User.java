@@ -5,7 +5,7 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 ///TODO bez serializacji
-class User implements Parcelable{
+class User {
     private String name;
     private String title;
     private ArrayList<Content> contentList;
@@ -14,12 +14,6 @@ class User implements Parcelable{
         this.name = name;
         this.title = title;
         this.contentList = contentList;
-    }
-
-    protected User(Parcel in) {
-        name = in.readString();
-        title = in.readString();
-        contentList = in.readArrayList(null);
     }
     public String getName() {
         return name;
@@ -40,27 +34,5 @@ class User implements Parcelable{
         this.contentList.add(content);
     }
 
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
 
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(title);
-        dest.writeTypedList(contentList);
-    }
 }
