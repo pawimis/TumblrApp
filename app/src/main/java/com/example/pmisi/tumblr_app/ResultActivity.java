@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,15 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_results);
         Bundle b = getIntent().getExtras();
         ArrayList<Content> content =  b.getParcelableArrayList("Content");
+        String usernameString = b.getString("UserName");
+        String tittleString = b.getString("UserTittle");
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.activity_results_recyclerView);
+        TextView username = (TextView) findViewById(R.id.activity_result_userName);
+        TextView tittle = (TextView) findViewById(R.id.activity_result_userTittle);
+        if (tittleString != null)
+            tittle.setText(tittleString);
+        username.setText(usernameString);
+
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);

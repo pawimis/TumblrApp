@@ -11,18 +11,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.xmlpull.v1.XmlPullParser;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity  {
 
+    final int seekBarMin = 20;
     EditText usernameEditText;
     Button sendButton;
     Spinner typeSpinner;
-
+    SeekBar seekBar;
+    TextView amountTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,27 @@ public class MainActivity extends AppCompatActivity  {
         usernameEditText = (EditText) findViewById(R.id.main_activity_edit_text_username);
         sendButton = (Button) findViewById(R.id.main_activity_button_send);
         typeSpinner = (Spinner) findViewById(R.id.main_activity_spinner);
+        amountTextView = (TextView) findViewById(R.id.main_activity_amountLabel);
+        amountTextView.setText(String.valueOf(seekBarMin));
+        seekBar = (SeekBar) findViewById(R.id.main_activity_seekBar);
+        seekBar.setMax(30);
+        seekBar.setProgress(0);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                amountTextView.setText(String.valueOf(progress + seekBarMin));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,7 +61,7 @@ public class MainActivity extends AppCompatActivity  {
                 String spinnerValue = String.valueOf(typeSpinner.getSelectedItem());
                 Log.i("Spinner",spinnerValue);
                 if(username.length() > 0){
-                    fetchUserData(username,spinnerValue);
+                    fetchUserData(username, spinnerValue, amountTextView.getText().toString());
                 }else{
                     AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(MainActivity.this);
                     dlgAlert.setMessage("This is an alert with no consequence");
@@ -51,14 +74,15 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
     }
-    private void fetchUserData(String username,String option){
-        class FetchUserDataTask extends AsyncTask<String,Void,ArrayList<Content>>{
+
+    private void fetchUserData(String username, String option, String value) {
+        class FetchUserDataTask extends AsyncTask<String, Void, User> {
             private ProgressDialog loading;
             @Override
-            protected ArrayList<Content> doInBackground(String... params) {
+            protected User doInBackground(String... params) {
                 User fetchedUser = null;
                 String url = "http://"+params[0]+".tumblr.com/api/read";
-                XmlPullParser resultParser = XmlParserService.fetchXML(url, params[1]);
+                XmlPullParser resultParser = XmlParserService.fetchXML(url, params[1], params[2]);
                 if(resultParser != null){
                     fetchedUser = XmlParserService.parseXMLAndStoreIt(resultParser);
                     Log.i("User has: ",String.valueOf(fetchedUser.getContentList().size()));
@@ -68,7 +92,7 @@ public class MainActivity extends AppCompatActivity  {
                     }
                 }
                 if (fetchedUser != null)
-                    return fetchedUser.getContentList();
+                    return fetchedUser;
                 else
                     return null;
             }
@@ -79,18 +103,20 @@ public class MainActivity extends AppCompatActivity  {
             }
 
             @Override
-            protected void onPostExecute(ArrayList<Content> content) {
-                super.onPostExecute(content);
+            protected void onPostExecute(User user) {
+                super.onPostExecute(user);
                 loading.dismiss();
-                if(content != null){
+                if (user.getContentList() != null) {
                     Intent intent = new Intent(MainActivity.this,ResultActivity.class);
-                    intent.putParcelableArrayListExtra("Content",content);
+                    intent.putParcelableArrayListExtra("Content", user.getContentList());
+                    intent.putExtra("UserName", user.getName());
+                    intent.putExtra("UserTittle", user.getTitle());
                     startActivity(intent);
                 }
 
             }
         }
         FetchUserDataTask task = new FetchUserDataTask();
-        task.execute(username,option);
+        task.execute(username, option, value);
     }
 }

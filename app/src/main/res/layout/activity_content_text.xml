@@ -7,7 +7,9 @@
         android:id="@+id/activity_content_text_TextView_tittle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="40dp"/>
+        android:paddingBottom="40dp"
+        android:text="sample"
+        android:textSize="30sp" />
 
     <ScrollView
         android:id="@+id/activity_content_text_scrollView"

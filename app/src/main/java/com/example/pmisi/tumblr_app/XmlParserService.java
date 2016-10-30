@@ -14,10 +14,10 @@ import java.util.ArrayList;
 
 class XmlParserService {
 
-    static XmlPullParser fetchXML(String urlString, String option) {
+    static XmlPullParser fetchXML(String urlString, String option, String amount) {
         try {
             XmlPullParserFactory xmlFactoryObject;
-            URL url = new URL(urlString+"?type="+option.toLowerCase());
+            URL url = new URL(urlString + "?type=" + option.toLowerCase() + "&num=" + amount.toLowerCase());
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 
             conn.setReadTimeout(10000);
@@ -32,7 +32,6 @@ class XmlParserService {
 
             myParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             myParser.setInput(stream, null);
-            //stream.close();
             return myParser;
         }
         catch (Exception e) {
@@ -115,18 +114,15 @@ class XmlParserService {
         boolean variable = (!myParser.getName().equals("post"));
         while ((myParser.getEventType() != XmlPullParser.END_TAG) || variable) {
             if (myParser.getEventType() == XmlPullParser.START_TAG) {
-                if (myParser.getName().equals("link-text")) {
+                if (myParser.getName().equals("regular-body")) {
                     myParser.next();
                     content.addContent(Html.fromHtml(myParser.getText()).toString());
                 } else if (myParser.getName().equals("tag")) {
                     myParser.next();
                     content.addTag(myParser.getText());
-                } else if (myParser.getName().equals("id3-artist")) {
+                } else if (myParser.getName().equals("regular-title")) {
                     myParser.next();
                     content.setTittle(myParser.getText());
-                } else if (myParser.getName().equals("id3-title")) {
-                    myParser.next();
-                    content.appendToTittle(myParser.getText());
                 }
             }
             myParser.next();
@@ -193,6 +189,9 @@ class XmlParserService {
                     quoteText = quoteText.replaceAll("<p>", "");
                     quoteText = quoteText.replaceAll("<br/>", "\n");
                     content.addContent(quoteText);
+                } else if (myParser.getName().equals("quote-source")) {
+                    myParser.next();
+                    content.addContent(Html.fromHtml(myParser.getText()).toString());
                 } else if (myParser.getName().equals("tag")) {
                     myParser.next();
                     content.addTag(myParser.getText());

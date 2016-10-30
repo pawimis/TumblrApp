@@ -25,7 +25,41 @@
         android:id="@+id/main_activity_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:entries="@array/type_arrays"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="@string/PostNumber" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <SeekBar
+            android:id="@+id/main_activity_seekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="80" />
+
+        <TextView
+            android:id="@+id/main_activity_amountLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:gravity="end"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="20"
+            android:textColor="#04cbde"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/main_activity_button_send"
