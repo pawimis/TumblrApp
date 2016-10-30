@@ -25,21 +25,23 @@ public class ContentWebActivity extends AppCompatActivity {
 
         b = getIntent().getExtras();
         webList = b.getStringArrayList("WebActivity");
-        for (String text : webList) {
-            Log.i("Text is  ", text);
-        }
-        tagList = b.getStringArrayList("Tags");
-        tittle = b.getString("Tittle");
-        URL = b.getString("URL");
-        Log.i("Text : ", String.valueOf(webList.size()));
-        Log.i("PhotoTagSize : ", String.valueOf(tagList.size()));
-        Log.i("URL : ", URL);
+        if (webList != null) {
+            for (String text : webList) {
+                Log.i("Text is  ", text);
+            }
+            tagList = b.getStringArrayList("Tags");
+            tittle = b.getString("Tittle");
+            URL = b.getString("URL");
+            Log.i("Text : ", String.valueOf(webList.size()));
+            Log.i("PhotoTagSize : ", String.valueOf(tagList.size()));
+            Log.i("URL : ", URL);
 
-        LinearLayout linearLayoutWeb = (LinearLayout) findViewById(R.id.activity_content_web_video_linearLayout);
-        webview = (WebView) findViewById(R.id.activity_content_web_video_webView);
-        webview.getSettings().setJavaScriptEnabled(true);
-        webview.loadUrl(URL);
-        //linearLayoutWeb.addView(webview);
+            LinearLayout linearLayoutWeb = (LinearLayout) findViewById(R.id.activity_content_web_video_linearLayout);
+            webview = (WebView) findViewById(R.id.activity_content_web_video_webView);
+            webview.getSettings().setJavaScriptEnabled(true);
+            webview.loadUrl(URL);
+            //linearLayoutWeb.addView(webview);
+        }
     }
 
     @Override

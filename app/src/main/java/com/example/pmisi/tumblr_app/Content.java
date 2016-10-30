@@ -25,7 +25,8 @@ class Content implements Parcelable{
     private Bitmap bitmap;
     private ArrayList<String> contentList;
     private ArrayList<String> tagsList;
-    protected Content(Parcel in) {
+
+    private Content(Parcel in) {
         url = in.readString();
         type = in.readString();
         date = in.readString();
@@ -43,11 +44,11 @@ class Content implements Parcelable{
 
     }
 
-    public Bitmap getBitmap() {
+    Bitmap getBitmap() {
         return bitmap;
     }
 
-    public void setBitmap(Bitmap bitmap) {
+    void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
     }
 
@@ -72,7 +73,9 @@ class Content implements Parcelable{
             contentList.add(quote);
     }
 
-    public ArrayList<String> getTagsList() {return tagsList;}
+    ArrayList<String> getTagsList() {
+        return tagsList;
+    }
 
     void addTag(String tag) {tagsList.add(tag);}
 
@@ -88,7 +91,7 @@ class Content implements Parcelable{
         return date;
     }
 
-    public String getUrl() {
+    String getUrl() {
         return url;
     }
 

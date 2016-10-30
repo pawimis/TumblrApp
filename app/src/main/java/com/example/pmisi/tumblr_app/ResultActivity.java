@@ -15,13 +15,12 @@ import java.util.ArrayList;
 
 public class ResultActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.activity_results);
         Bundle b = getIntent().getExtras();
         ArrayList<Content> content =  b.getParcelableArrayList("Content");
-        recyclerView = (RecyclerView) findViewById(R.id.activity_results_recyclerView);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.activity_results_recyclerView);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);

@@ -31,35 +31,37 @@ public class ContentAudioActivity extends AppCompatActivity {
 
         b = getIntent().getExtras();
         webList = b.getStringArrayList("AudioActivity");
-        for (String text : webList) {
-            Log.i("Text is  ", text);
+        if (webList != null) {
+            for (String text : webList) {
+                Log.i("Text is  ", text);
+            }
+            tagList = b.getStringArrayList("Tags");
+            tittle = b.getString("Tittle");
+            URL = b.getString("URL");
+            Log.i("Text : ", String.valueOf(webList.size()));
+            Log.i("PhotoTagSize : ", String.valueOf(tagList.size()));
+            Log.i("URL : ", URL);
+
+            LinearLayout linearLayoutWeb = (LinearLayout) findViewById(R.id.activity_content_audio_audio_linearLayout);
+            webview = new WebView(ContentAudioActivity.this);
+            webview.setWebViewClient(new WebViewClient() {
+                @Override
+                public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    return false;
+                }
+
+            });
+            WebSettings webSettings = webview.getSettings();
+            webSettings.setJavaScriptEnabled(true);
+            webview.loadData(webList.get(0), "text/html", "uft-8");
+            webview.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            linearLayoutWeb.addView(webview);
         }
-        tagList = b.getStringArrayList("Tags");
-        tittle = b.getString("Tittle");
-        URL = b.getString("URL");
-        Log.i("Text : ", String.valueOf(webList.size()));
-        Log.i("PhotoTagSize : ", String.valueOf(tagList.size()));
-        Log.i("URL : ", URL);
-
-        LinearLayout linearLayoutWeb = (LinearLayout) findViewById(R.id.activity_content_audio_audio_linearLayout);
-        webview = new WebView(ContentAudioActivity.this);
-        webview.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;
-            }
-
-        });
-        WebSettings webSettings = webview.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webview.loadData(webList.get(0), "text/html", "uft-8");
-        webview.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        linearLayoutWeb.addView(webview);
     }
 
     @Override

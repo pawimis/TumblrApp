@@ -45,7 +45,7 @@ class XmlParserService {
     static User parseXMLAndStoreIt(XmlPullParser myParser) {
         int event;
         User user = null;
-        Content content = null;
+        Content content;
         try {
             event = myParser.getEventType();
 
@@ -97,7 +97,7 @@ class XmlParserService {
                                     break;
                             }
                             Log.i("CheckUser", user == null ? "Null" : "not Null");
-                            if(user != null && content !=null)
+                            if (user != null)
                                 user.addToContentList(content);
                         }
                         break;

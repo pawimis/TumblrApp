@@ -3,14 +3,12 @@ package com.example.pmisi.tumblr_app;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,37 +18,10 @@ import java.util.ArrayList;
 
 class AdapterUserContent  extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = "AdapterUserContent";
+    private final ItemSelectedListener mListener;
     private LayoutInflater inflater;
     private Context appContext;
     private ArrayList<Content> content;
-    private final ItemSelectedListener mListener;
-
-    public class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
-        TextView tittleTextView;
-        TextView dateTextView;
-        TextView typeTextView;
-        ImageView imageView;
-
-        MyHolder(View itemView) {
-            super(itemView);
-            tittleTextView = (TextView) itemView.findViewById(R.id.container_content_textView_tittle);
-            dateTextView = (TextView) itemView.findViewById(R.id.container_content_textView_date);
-            typeTextView = (TextView) itemView.findViewById(R.id.container_content_textView_type);
-            imageView = (ImageView) itemView.findViewById(R.id.container_content_imageView);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            notifyItemChanged(getLayoutPosition());
-            mListener.onItemSelected(v, content.get(getAdapterPosition()));
-        }
-    }
-
-    public interface ItemSelectedListener{
-        void onItemSelected(View itemView , Content content);
-    }
 
     AdapterUserContent(ArrayList<Content> contentList, Context applicationContext, ItemSelectedListener mListener) {
         this.appContext = applicationContext;
@@ -109,7 +80,6 @@ class AdapterUserContent  extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return content.size();
     }
 
-
     private void downloadImage(ImageView imageView ,Content data){
          class DownloadImageTask extends AsyncTask<String,Void,Bitmap>{
              private ImageView imageView;
@@ -148,5 +118,32 @@ class AdapterUserContent  extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         DownloadImageTask download = new DownloadImageTask(imageView,data);
         download.execute(data.getContentList().get(0));
 
+    }
+
+    interface ItemSelectedListener {
+        void onItemSelected(View itemView, Content content);
+    }
+
+    private class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        TextView tittleTextView;
+        TextView dateTextView;
+        TextView typeTextView;
+        ImageView imageView;
+
+        MyHolder(View itemView) {
+            super(itemView);
+            tittleTextView = (TextView) itemView.findViewById(R.id.container_content_textView_tittle);
+            dateTextView = (TextView) itemView.findViewById(R.id.container_content_textView_date);
+            typeTextView = (TextView) itemView.findViewById(R.id.container_content_textView_type);
+            imageView = (ImageView) itemView.findViewById(R.id.container_content_imageView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            notifyItemChanged(getLayoutPosition());
+            mListener.onItemSelected(v, content.get(getAdapterPosition()));
+        }
     }
 }

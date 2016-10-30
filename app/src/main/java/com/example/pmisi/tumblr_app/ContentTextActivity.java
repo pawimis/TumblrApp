@@ -28,52 +28,54 @@ public class ContentTextActivity extends AppCompatActivity {
         setContentView(R.layout.activity_content_text);
         b = getIntent().getExtras();
         textList = b.getStringArrayList("Text");
-        for (String text : textList) {
-            Log.i("Text is  ", text);
-        }
-        tagList = b.getStringArrayList("Tags");
-        tittle = b.getString("Tittle");
-        URL = b.getString("URL");
-        Log.i("Text : " , String.valueOf(textList.size()));
-        Log.i("PhotoTagSize : " , String.valueOf(tagList.size()));
-        Log.i("URL : " , URL);
-
-        TextView textViewTittle = (TextView) findViewById(R.id.activity_content_text_TextView_tittle);
-        TextView textViewUrl = new TextView(ContentTextActivity.this);
-        LinearLayout linearLayoutText = (LinearLayout) findViewById(R.id.activity_content_text__text_linearLayout);
-        textViewTittle.setText(tittle);
-        textViewTittle.setGravity(Gravity.CENTER_HORIZONTAL);
-
-        textViewUrl.setClickable(true);
-        textViewUrl.setMovementMethod(LinkMovementMethod.getInstance());
-        textViewUrl.setText(URL);
-        textViewUrl.setPadding(0, 20, 0, 20);
-        textViewUrl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openWebPage(URL);
+        if (textList != null) {
+            for (String text : textList) {
+                Log.i("Text is  ", text);
             }
-        });
+            tagList = b.getStringArrayList("Tags");
+            tittle = b.getString("Tittle");
+            URL = b.getString("URL");
+            Log.i("Text : ", String.valueOf(textList.size()));
+            Log.i("PhotoTagSize : ", String.valueOf(tagList.size()));
+            Log.i("URL : ", URL);
 
-        for(String text : textList){
-            TextView textView = new TextView(ContentTextActivity.this);
-            textView.setText(text);
-            textView.setPadding(20,20,20,20);
-            linearLayoutText.addView(textView);
+            TextView textViewTittle = (TextView) findViewById(R.id.activity_content_text_TextView_tittle);
+            TextView textViewUrl = new TextView(ContentTextActivity.this);
+            LinearLayout linearLayoutText = (LinearLayout) findViewById(R.id.activity_content_text__text_linearLayout);
+            textViewTittle.setText(tittle);
+            textViewTittle.setGravity(Gravity.CENTER_HORIZONTAL);
+
+            textViewUrl.setClickable(true);
+            textViewUrl.setMovementMethod(LinkMovementMethod.getInstance());
+            textViewUrl.setText(URL);
+            textViewUrl.setPadding(0, 20, 0, 20);
+            textViewUrl.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openWebPage(URL);
+                }
+            });
+
+            for (String text : textList) {
+                TextView textView = new TextView(ContentTextActivity.this);
+                textView.setText(text);
+                textView.setPadding(20, 20, 20, 20);
+                linearLayoutText.addView(textView);
+            }
+            String fullTag = "";
+            for (String tag : tagList) {
+                Log.i("Tag", "Wczytane");
+                fullTag += "#" + tag + " ";
+            }
+            if (!fullTag.isEmpty()) {
+                Log.i("FullTag", fullTag);
+                TextView textView = new TextView(ContentTextActivity.this);
+                textView.setText(fullTag);
+                textView.setPadding(0, 20, 0, 20);
+                linearLayoutText.addView(textView);
+            }
+            linearLayoutText.addView(textViewUrl);
         }
-        String fullTag = "";
-        for (String tag : tagList) {
-            Log.i("Tag", "Wczytane");
-            fullTag += "#" + tag + " ";
-        }
-        if (!fullTag.isEmpty()) {
-            Log.i("FullTag", fullTag);
-            TextView textView = new TextView(ContentTextActivity.this);
-            textView.setText(fullTag);
-            textView.setPadding(0, 20, 0, 20);
-            linearLayoutText.addView(textView);
-        }
-        linearLayoutText.addView(textViewUrl);
     }
 
     public void openWebPage(String url) {
