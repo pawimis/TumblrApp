@@ -4,16 +4,15 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -61,15 +60,14 @@ public class MainActivity extends AppCompatActivity  {
     }
     private void fetchUserData(String username,String option){
         class FetchUserDataTask extends AsyncTask<String,Void,ArrayList<Content>>{
-            XmlParserService xmlParserService;
             private ProgressDialog loading;
             @Override
             protected ArrayList<Content> doInBackground(String... params) {
                 User fetchedUser = null;
                 String url = "http://"+params[0]+".tumblr.com/api/read";
-                XmlPullParser resultParser = fetchXML(url,params[1]);
+                XmlPullParser resultParser = XmlParserService.fetchXML(url, params[1]);
                 if(resultParser != null){
-                    fetchedUser = parseXMLAndStoreIt(resultParser);
+                    fetchedUser = XmlParserService.parseXMLAndStoreIt(resultParser);
                     Log.i("User has: ",String.valueOf(fetchedUser.getContentList().size()));
                     for (Content content : fetchedUser.getContentList()) {
                         Log.i("tittle ",content.getTittle());

@@ -1,0 +1,37 @@
+package com.example.pmisi.tumblr_app;
+
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Movie;
+import android.os.SystemClock;
+import android.view.View;
+
+import java.io.InputStream;
+
+public class GifWebView extends View {
+    InputStream mStream;
+    long mMoviestart;
+    private Movie mMovie;
+
+    public GifWebView(Context context, InputStream stream) {
+        super(context);
+        mStream = stream;
+        mMovie = Movie.decodeStream(mStream);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        canvas.drawColor(Color.TRANSPARENT);
+        super.onDraw(canvas);
+        final long now = SystemClock.uptimeMillis();
+
+        if (mMoviestart == 0) {
+            mMoviestart = now;
+        }
+        final int relTime = (int) ((now - mMoviestart) % mMovie.duration());
+        mMovie.setTime(relTime);
+        mMovie.draw(canvas, 10, 10);
+        this.invalidate();
+    }
+}

@@ -1,10 +1,7 @@
 package com.example.pmisi.tumblr_app;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import java.util.ArrayList;
 
-///TODO bez serializacji
 class User {
     private String name;
     private String title;
