@@ -9,11 +9,11 @@ import android.view.View;
 
 import java.io.InputStream;
 
-public class GifWebView extends View {
+public class WebService extends View {
     private long mMoviestart;
     private Movie mMovie;
 
-    public GifWebView(Context context, InputStream stream) {
+    public WebService(Context context, InputStream stream) {
         super(context);
         mMovie = Movie.decodeStream(stream);
     }
@@ -32,4 +32,5 @@ public class GifWebView extends View {
         mMovie.draw(canvas, 10, 10);
         this.invalidate();
     }
+
 }

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -12,31 +13,39 @@
     tools:context="com.example.pmisi.tumblr_app.MainActivity">
 
     <EditText
-        android:id="@+id/main_activity_edit_text_username"
+        android:id="@+id/main_activity_editText_username"
         style="@style/Widget.AppCompat.EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/main_activity_username"
         android:inputType="text"
         android:selectAllOnFocus="true"
-        android:textAppearance="@style/TextAppearance.AppCompat" />
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/hintColor" />
 
     <Spinner
         android:id="@+id/main_activity_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/main_activity_editText_username"
         android:layout_marginTop="20dp"
+        android:background="@color/textColor"
         android:entries="@array/type_arrays"/>
 
     <TextView
+        android:id="@+id/main_activity_textView_prompt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/main_activity_spinner"
         android:layout_marginTop="60dp"
-        android:text="@string/PostNumber" />
+        android:text="@string/PostNumber"
+        android:textColor="@color/textColor" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/main_activity_textView_prompt"
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
@@ -49,13 +58,13 @@
         <TextView
             android:id="@+id/main_activity_amountLabel"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="10"
             android:gravity="end"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:text="20"
-            android:textColor="#04cbde"
+            android:text="@string/startingValue"
+            android:textColor="@color/textColor"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -65,5 +74,7 @@
         android:id="@+id/main_activity_button_send"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/textColor"
         android:text="@string/main_activity_send" />
-</LinearLayout>
+</RelativeLayout>

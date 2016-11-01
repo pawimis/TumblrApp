@@ -49,7 +49,11 @@ class Content implements Parcelable{
         this.bitmap = bitmap;
     }
     void appendToTittle(String toAppend){
-        this.tittle += (" " +toAppend);
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.tittle);
+        sb.append(" ");
+        sb.append(toAppend);
+        this.tittle = sb.toString();
     }
     String getType() {
         return type;

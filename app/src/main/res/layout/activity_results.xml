@@ -2,33 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
+
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/activity_result_userName"
+        android:id="@+id/activity_result_textView_userName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
+        android:textColor="@color/textColor"
         android:textSize="19sp" />
 
     <TextView
-        android:id="@+id/activity_result_userTittle"
+        android:id="@+id/activity_result_textView_userTittle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:textAlignment="center"
+        android:textColor="@color/textColor"
         android:textSize="13sp" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/activity_results_recyclerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"/>
-
-    <TextView
-        android:id="@+id/activity_result_userURL"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sample" />
 
 </LinearLayout>

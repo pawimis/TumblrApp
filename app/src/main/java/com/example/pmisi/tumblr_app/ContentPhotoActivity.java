@@ -1,12 +1,12 @@
 package com.example.pmisi.tumblr_app;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.webkit.WebResourceRequest;
@@ -19,45 +19,48 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 public class ContentPhotoActivity extends AppCompatActivity{
-    String URL;
-    Bundle b;
-    ArrayList<String> photoUrlList;
-    ArrayList<String> tagList;
-    String tittle;
+    private String url;
+    private ArrayList<String> photoUrlList;
+    private ArrayList<String> tagList;
+    private String tittle;
+    private LinearLayout linearLayout;
+    private TextView textViewTittle;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content_photo);
-        b = getIntent().getExtras();
+        Bundle b = getIntent().getExtras();
         photoUrlList = b.getStringArrayList("PhotoURL");
         tagList = b.getStringArrayList("Tags");
         tittle = b.getString("Tittle");
-        URL = b.getString("URL");
-        Log.i("PhotoUrlSize : " , String.valueOf(photoUrlList.size()));
-        Log.i("PhotoTagSize : " , String.valueOf(tagList.size()));
-        Log.i("URL : " , URL);
+        url = b.getString("Url");
 
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.activity_content_photo_linearLayout);
-        TextView textViewTittle = (TextView) findViewById(R.id.activity_content_photo_TextView_tittle);
+
+        linearLayout = (LinearLayout) findViewById(R.id.activity_content_photo_linearLayout);
+        textViewTittle = (TextView) findViewById(R.id.activity_content_photo_TextView_tittle);
+        serviceUi();
+
+    }
+
+    private void serviceUi() {
         TextView textViewUrl = new TextView(ContentPhotoActivity.this);
         textViewTittle.setText(tittle);
         textViewTittle.setGravity(Gravity.CENTER_HORIZONTAL);
 
         textViewUrl.setClickable(true);
         textViewUrl.setMovementMethod(LinkMovementMethod.getInstance());
-        textViewUrl.setText(URL);
-        textViewUrl.setPadding(0, 20, 0, 20);
+        textViewUrl.setText(url);
+        textViewUrl.setTextColor(Color.WHITE);
+        textViewUrl.setPadding(20, 20, 20, 20);
         textViewUrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openWebPage(URL);
+                openWebPage(url);
             }
         });
 
         for (String photo : photoUrlList) {
-            Log.i("Photo", "Wczytane " + photo);
             if (photo.contains("250.gif")) {
-                Log.i("Gif", "Wczytane");
                 loadGif(photo, linearLayout);
             } else {
                 WebView webView = new WebView(ContentPhotoActivity.this);
@@ -67,20 +70,20 @@ public class ContentPhotoActivity extends AppCompatActivity{
                 linearLayout.addView(webView);
             }
         }
-        String fullTag = "";
+        StringBuilder fullTag = new StringBuilder();
         for (String tag : tagList) {
-            Log.i("Tag", "Wczytane");
-            fullTag += "#" + tag + " ";
+            fullTag.append("#");
+            fullTag.append(tag);
+            fullTag.append(" ");
         }
-        if (!fullTag.isEmpty()) {
-            Log.i("FullTag", fullTag);
+        if (!fullTag.toString().equals("")) {
             TextView textView = new TextView(ContentPhotoActivity.this);
             textView.setText(fullTag);
+            textView.setTextColor(Color.WHITE);
             textView.setPadding(0, 20, 0, 20);
             linearLayout.addView(textView);
         }
         linearLayout.addView(textViewUrl);
-
     }
 
     private void loadGif(String url, LinearLayout linearLayout) {
@@ -97,7 +100,7 @@ public class ContentPhotoActivity extends AppCompatActivity{
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
 
-        GifWebView view = new GifWebView(this, stream);
+        WebService view = new WebService(this, stream);
         linearLayout.addView(view);
     }
 
@@ -108,19 +111,11 @@ public class ContentPhotoActivity extends AppCompatActivity{
             startActivity(intent);
         }
     }
-
-    ///ToDo coś z tym
     private class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             view.loadUrl(request.toString());
             return true;
         }
-
-       /* public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
-            return true;
-        }*/
     }
-
 }

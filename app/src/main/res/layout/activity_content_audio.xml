@@ -2,7 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/activity_content_audio_TextView_tittle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="40dp"
+        android:textColor="@color/textColor"
+        android:textSize="20sp" />
 
     <WebView
         android:id="@+id/activity_content_audio_webView"
@@ -11,7 +20,7 @@
 
     </WebView>
     <LinearLayout
-        android:id="@+id/activity_content_audio_audio_linearLayout"
+        android:id="@+id/activity_content_audio_linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" />

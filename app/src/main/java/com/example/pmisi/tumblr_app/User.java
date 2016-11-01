@@ -18,12 +18,8 @@ class User {
     public void setName(String name) {
         this.name = name;
     }
-
     String getTitle() {
         return title;
-    }
-    public void setTitle(String title) {
-        this.title = title;
     }
     ArrayList<Content> getContentList() {
         return contentList;

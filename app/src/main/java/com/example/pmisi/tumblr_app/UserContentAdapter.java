@@ -17,14 +17,11 @@ import java.util.ArrayList;
 
 
 class UserContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static final String TAG = "UserContentAdapter";
     private final ItemSelectedListener mListener;
     private LayoutInflater inflater;
-    private Context appContext;
     private ArrayList<Content> content;
 
     UserContentAdapter(ArrayList<Content> contentList, Context applicationContext, ItemSelectedListener mListener) {
-        this.appContext = applicationContext;
         inflater = LayoutInflater.from(applicationContext);
         this.content = contentList;
         this.mListener = mListener;
@@ -71,6 +68,9 @@ class UserContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 break;
             case "Text":
                 myHolder.imageView.setImageResource(R.drawable.text);
+                break;
+            case "Question":
+                myHolder.imageView.setImageResource(R.drawable.question);
                 break;
         }
     }

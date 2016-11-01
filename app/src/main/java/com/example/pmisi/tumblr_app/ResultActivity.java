@@ -16,20 +16,31 @@ import java.util.ArrayList;
 
 public class ResultActivity extends AppCompatActivity {
 
+    private RecyclerView recyclerView;
+    private TextView username;
+    private TextView tittle;
+    private ArrayList<Content> content;
+    private String usernameString;
+    private String tittleString;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.activity_results);
         Bundle b = getIntent().getExtras();
-        ArrayList<Content> content =  b.getParcelableArrayList("Content");
-        String usernameString = b.getString("UserName");
-        String tittleString = b.getString("UserTittle");
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.activity_results_recyclerView);
-        TextView username = (TextView) findViewById(R.id.activity_result_userName);
-        TextView tittle = (TextView) findViewById(R.id.activity_result_userTittle);
+        content = b.getParcelableArrayList("Content");
+        usernameString = b.getString("UserName");
+        tittleString = b.getString("UserTittle");
+        recyclerView = (RecyclerView) findViewById(R.id.activity_results_recyclerView);
+        username = (TextView) findViewById(R.id.activity_result_textView_userName);
+        tittle = (TextView) findViewById(R.id.activity_result_textView_userTittle);
+        serviceUi();
+        super.onCreate(savedInstanceState);
+    }
+
+    private void serviceUi() {
         if (tittleString != null)
             tittle.setText(tittleString);
         username.setText(usernameString);
-
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
@@ -46,12 +57,6 @@ public class ResultActivity extends AppCompatActivity {
                         intent = new Intent(ResultActivity.this, ContentWebActivity.class);
                         intent.putStringArrayListExtra("WebActivity", content.getContentList());
                         break;
-                    case "Quote":
-                    case "Text":
-                    case "Chat":
-                        intent = new Intent(ResultActivity.this, ContentTextActivity.class);
-                        intent.putStringArrayListExtra("Text", content.getContentList());
-                        break;
                     case "Audio":
                         intent = new Intent(ResultActivity.this, ContentAudioActivity.class);
                         intent.putStringArrayListExtra("AudioActivity", content.getContentList());
@@ -60,20 +65,24 @@ public class ResultActivity extends AppCompatActivity {
                         intent = new Intent(Intent.ACTION_VIEW);
                         intent.setData(Uri.parse(content.getContentList().get(0)));
                         break;
+                    case "Question":
+                    case "Quote":
+                    case "Text":
+                    case "Chat":
+                        intent = new Intent(ResultActivity.this, ContentTextActivity.class);
+                        intent.putStringArrayListExtra("Text", content.getContentList());
+                        break;
                 }
                 if (intent != null) {
                     intent.putExtra("Type", content.getType());
                     intent.putExtra("Tags", content.getTagsList());
                     intent.putExtra("Tittle", content.getTittle());
-                    intent.putExtra("URL", content.getUrl());
+                    intent.putExtra("Url", content.getUrl());
                     startActivity(intent);
                 }
             }
         });
         recyclerView.setAdapter(mAdapter);
-
-
-        super.onCreate(savedInstanceState);
-
+        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext()));
     }
 }

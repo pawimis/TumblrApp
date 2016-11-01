@@ -41,10 +41,9 @@ class XmlParserService {
         }
         catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
-
     static User parseXMLAndStoreIt(XmlPullParser myParser) {
         int event;
         User user = null;
@@ -56,10 +55,14 @@ class XmlParserService {
                 switch (event){
                     case XmlPullParser.START_TAG:
                         if(myParser.getName().equals("tumblelog")){
-                            user = new User(myParser.getAttributeValue(null,"name"),
-                                    myParser.getAttributeValue(null,"title"),new ArrayList<Content>());
-                        }
-                        if(myParser.getName().equals("post")){
+                            String name = myParser.getAttributeValue(null, "name");
+                            StringBuilder tittle = new StringBuilder();
+                            tittle.append(myParser.getAttributeValue(null, "title"));
+                            myParser.next();
+                            if (myParser.getEventType() == XmlPullParser.TEXT)
+                                tittle.append(myParser.getText());
+                            user = new User(name, tittle.toString(), new ArrayList<Content>());
+                        } else if (myParser.getName().equals("post")) {
                             content = new Content(myParser.getAttributeValue(null, "url"), myParser.getAttributeValue(null, "date"),
                                     myParser.getAttributeValue(null, "slug").replace('-', ' '));
                             switch (myParser.getAttributeValue(null,"type")){
@@ -97,6 +100,11 @@ class XmlParserService {
                                     content.setType("Text");
                                     myParser.next();
                                     parseText(myParser, content);
+                                    break;
+                                case "answer":
+                                    content.setType("Question");
+                                    myParser.next();
+                                    parseQuestion(myParser, content);
                                     break;
                             }
                             Log.i("CheckUser", user == null ? "Null" : "not Null");
@@ -138,6 +146,30 @@ class XmlParserService {
         }
     }
 
+    private static void parseQuestion(XmlPullParser myParser, Content content) throws Exception {
+        boolean variable = (!myParser.getName().equals("post"));
+        while ((myParser.getEventType() != XmlPullParser.END_TAG) || variable) {
+            if (myParser.getEventType() == XmlPullParser.START_TAG) {
+                if (myParser.getName().equals("answer")) {
+                    myParser.next();
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        content.addContent(Html.fromHtml(myParser.getText(), Html.FROM_HTML_MODE_LEGACY).toString());
+                    } else {
+                        content.addContent(Html.fromHtml(myParser.getText()).toString());
+                    }
+                } else if (myParser.getName().equals("tag")) {
+                    myParser.next();
+                    content.addTag(myParser.getText());
+                } else if (myParser.getName().equals("question")) {
+                    myParser.next();
+                    content.setTittle(myParser.getText());
+                }
+            }
+            myParser.next();
+            variable = (myParser.getEventType() == XmlPullParser.TEXT) || (!myParser.getName().equals("post"));
+        }
+    }
+
     private static void parseAudio(XmlPullParser myParser, Content content) throws Exception {
         Log.i("ParseAudio", "parse");
         boolean variable = (!myParser.getName().equals("post"));
@@ -146,8 +178,6 @@ class XmlParserService {
             if (myParser.getEventType() == XmlPullParser.START_TAG) {
                 if (myParser.getName().equals("audio-embed")) {
                     myParser.next();
-                    //Document document = Jsoup.parse(myParser.getText());
-                    //String output = document.select("iframe").first().attr("src");
                     content.addContent(myParser.getText());
                 } else if (myParser.getName().equals("tag")) {
                     myParser.next();
@@ -193,10 +223,11 @@ class XmlParserService {
             if (myParser.getEventType() == XmlPullParser.START_TAG) {
                 if (myParser.getName().equals("quote-text")) {
                     myParser.next();
-                    String quoteText = myParser.getText();
-                    quoteText = quoteText.replaceAll("<p>", "");
-                    quoteText = quoteText.replaceAll("<br/>", "\n");
-                    content.addContent(quoteText);
+                    StringBuilder quoteText = new StringBuilder();
+                    quoteText.append('"');
+                    quoteText.append(myParser.getText().replaceAll("<p>", "").replaceAll("<br/>", "\n"));
+                    quoteText.append('"');
+                    content.addContent(quoteText.toString());
                 } else if (myParser.getName().equals("quote-source")) {
                     myParser.next();
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -306,7 +337,7 @@ class XmlParserService {
         }
     }
 
-    public boolean isNetworkAvailable(final Context context) {
+    static boolean isNetworkAvailable(final Context context) {
         final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }

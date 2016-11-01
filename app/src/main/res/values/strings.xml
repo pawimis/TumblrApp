@@ -4,7 +4,8 @@
     <string name="main_activity_username">Username</string>
     <string name="main_activity_send">Send</string>
     <string name="no_tittle">No Tittle</string>
-    <string name="PostNumber">Number of posts (20 - 50)</string>
+    <string name="PostNumber">Number of posts</string>
+    <string name="startingValue">20</string>
 
 
     <string-array name="type_arrays">

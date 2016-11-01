@@ -2,14 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
+
     android:orientation="vertical">
     <TextView
         android:id="@+id/activity_content_text_TextView_tittle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="40dp"
-        android:text="sample"
-        android:textSize="30sp" />
+        android:textColor="@color/textColor"
+        android:textSize="20sp" />
 
     <ScrollView
         android:id="@+id/activity_content_text_scrollView"
@@ -18,7 +20,7 @@
         android:layout_weight="1">
 
         <LinearLayout
-            android:id="@+id/activity_content_text__text_linearLayout"
+            android:id="@+id/activity_content_text_linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
