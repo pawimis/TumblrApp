@@ -10,14 +10,12 @@ import android.view.View;
 import java.io.InputStream;
 
 public class GifWebView extends View {
-    InputStream mStream;
-    long mMoviestart;
+    private long mMoviestart;
     private Movie mMovie;
 
     public GifWebView(Context context, InputStream stream) {
         super(context);
-        mStream = stream;
-        mMovie = Movie.decodeStream(mStream);
+        mMovie = Movie.decodeStream(stream);
     }
 
     @Override

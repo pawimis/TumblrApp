@@ -4,13 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <WebView
-        android:id="@+id/activity_content_web_video_webView"
+    <VideoView
+        android:id="@+id/activity_content_web_video_VideoView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp">
 
-    </WebView>
+    </VideoView>
 
     <LinearLayout
         android:id="@+id/activity_content_web_video_linearLayout"

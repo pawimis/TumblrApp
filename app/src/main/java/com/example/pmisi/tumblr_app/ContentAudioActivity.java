@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.ViewGroup;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -43,7 +42,7 @@ public class ContentAudioActivity extends AppCompatActivity {
             Log.i("URL : ", URL);
 
             LinearLayout linearLayoutWeb = (LinearLayout) findViewById(R.id.activity_content_audio_audio_linearLayout);
-            webview = new WebView(ContentAudioActivity.this);
+            webview = (WebView) findViewById(R.id.activity_content_audio_webView);
             webview.setWebViewClient(new WebViewClient() {
                 @Override
                 public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
@@ -51,16 +50,17 @@ public class ContentAudioActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                     return false;
                 }
-
             });
             WebSettings webSettings = webview.getSettings();
             webSettings.setJavaScriptEnabled(true);
             webview.loadData(webList.get(0), "text/html", "uft-8");
-            webview.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            linearLayoutWeb.addView(webview);
+            //webview.getSettings().setUseWideViewPort(true);
+            webview.getSettings().setLoadWithOverviewMode(true);
+            //webview.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            //linearLayoutWeb.addView(webview);
         }
     }
 

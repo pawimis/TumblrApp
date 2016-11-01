@@ -1,8 +1,13 @@
 package com.example.pmisi.tumblr_app;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.text.Html;
 import android.util.Log;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -40,7 +45,6 @@ class XmlParserService {
         return null;
     }
 
-    ///Todo User nie potrzebny
     static User parseXMLAndStoreIt(XmlPullParser myParser) {
         int event;
         User user = null;
@@ -116,7 +120,11 @@ class XmlParserService {
             if (myParser.getEventType() == XmlPullParser.START_TAG) {
                 if (myParser.getName().equals("regular-body")) {
                     myParser.next();
-                    content.addContent(Html.fromHtml(myParser.getText()).toString());
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        content.addContent(Html.fromHtml(myParser.getText(), Html.FROM_HTML_MODE_LEGACY).toString());
+                    } else {
+                        content.addContent(Html.fromHtml(myParser.getText()).toString());
+                    }
                 } else if (myParser.getName().equals("tag")) {
                     myParser.next();
                     content.addTag(myParser.getText());
@@ -191,7 +199,11 @@ class XmlParserService {
                     content.addContent(quoteText);
                 } else if (myParser.getName().equals("quote-source")) {
                     myParser.next();
-                    content.addContent(Html.fromHtml(myParser.getText()).toString());
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        content.addContent(Html.fromHtml(myParser.getText(), Html.FROM_HTML_MODE_LEGACY).toString());
+                    } else {
+                        content.addContent(Html.fromHtml(myParser.getText()).toString());
+                    }
                 } else if (myParser.getName().equals("tag")) {
                     myParser.next();
                     content.addTag(myParser.getText());
@@ -267,13 +279,13 @@ class XmlParserService {
             if (myParser.getEventType() == XmlPullParser.START_TAG) {
                 if (myParser.getName().equals("video-source")) {
                     myParser.next();
-                    //content.addContent(myParser.getText());
+                    content.addContent(myParser.getText());
                 } else if (myParser.getName().equals("video-player")) {
                     if (myParser.getAttributeCount() == 0) {
                         Log.i("video-player", "parse");
                         myParser.next();
-                        content.addContent(myParser.getText());
-                        /*Document document = Jsoup.parse(myParser.getText());
+                        //content.addContent(myParser.getText());
+                        Document document = Jsoup.parse(myParser.getText());
                         Element video = document.select("source").first();
                         if (video == null) {
                             video = document.select("iframe").first();
@@ -282,7 +294,7 @@ class XmlParserService {
                             String urlValue = video.attr("src");
                             content.removePreviousElement();
                             content.addContent(urlValue);
-                        }*/
+                        }
                     }
                 } else if (myParser.getName().equals("tag")) {
                     myParser.next();
@@ -292,5 +304,10 @@ class XmlParserService {
             myParser.next();
             variable = myParser.getEventType() == XmlPullParser.TEXT || (!myParser.getName().equals("post"));
         }
+    }
+
+    public boolean isNetworkAvailable(final Context context) {
+        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 }

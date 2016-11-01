@@ -33,7 +33,7 @@ public class ResultActivity extends AppCompatActivity {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        AdapterUserContent mAdapter = new AdapterUserContent(content, getApplicationContext(), new AdapterUserContent.ItemSelectedListener() {
+        UserContentAdapter mAdapter = new UserContentAdapter(content, getApplicationContext(), new UserContentAdapter.ItemSelectedListener() {
             @Override
             public void onItemSelected(View itemView, Content content) {
                 Intent intent = null;

@@ -62,13 +62,14 @@ public class ContentTextActivity extends AppCompatActivity {
                 textView.setPadding(20, 20, 20, 20);
                 linearLayoutText.addView(textView);
             }
-            String fullTag = "";
+            StringBuilder fullTag = new StringBuilder();
             for (String tag : tagList) {
-                Log.i("Tag", "Wczytane");
-                fullTag += "#" + tag + " ";
+                fullTag.append("#");
+                fullTag.append(tag);
+                fullTag.append(" ");
             }
-            if (!fullTag.isEmpty()) {
-                Log.i("FullTag", fullTag);
+            if (!fullTag.toString().equals("")) {
+                Log.i("FullTag", fullTag.toString());
                 TextView textView = new TextView(ContentTextActivity.this);
                 textView.setText(fullTag);
                 textView.setPadding(0, 20, 0, 20);

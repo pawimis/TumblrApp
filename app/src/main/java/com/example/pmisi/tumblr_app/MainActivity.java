@@ -30,11 +30,13 @@ public class MainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         usernameEditText = (EditText) findViewById(R.id.main_activity_edit_text_username);
         sendButton = (Button) findViewById(R.id.main_activity_button_send);
         typeSpinner = (Spinner) findViewById(R.id.main_activity_spinner);
         amountTextView = (TextView) findViewById(R.id.main_activity_amountLabel);
         amountTextView.setText(String.valueOf(seekBarMin));
+
         seekBar = (SeekBar) findViewById(R.id.main_activity_seekBar);
         seekBar.setMax(30);
         seekBar.setProgress(0);
@@ -57,22 +59,29 @@ public class MainActivity extends AppCompatActivity  {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = usernameEditText.getText().toString();
-                String spinnerValue = String.valueOf(typeSpinner.getSelectedItem());
-                Log.i("Spinner",spinnerValue);
-                if(username.length() > 0){
-                    fetchUserData(username, spinnerValue, amountTextView.getText().toString());
-                }else{
-                    AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(MainActivity.this);
-                    dlgAlert.setMessage("This is an alert with no consequence");
-                    dlgAlert.setTitle("App Title");
-                    dlgAlert.setPositiveButton("Ok",
-                            new DialogInterface.OnClickListener() {public void onClick(DialogInterface dialog, int which) {}});
-                    dlgAlert.setCancelable(true);
-                    dlgAlert.create().show();
-                }
+                serviceUi();
             }
         });
+    }
+
+    private void serviceUi() {
+        String username = usernameEditText.getText().toString();
+        String spinnerValue = String.valueOf(typeSpinner.getSelectedItem());
+        Log.i("Spinner", spinnerValue);
+        if (username.length() > 0) {
+            fetchUserData(username, spinnerValue, amountTextView.getText().toString());
+        } else {
+            AlertDialog.Builder dlgAlert = new AlertDialog.Builder(MainActivity.this);
+            dlgAlert.setMessage("This is an alert with no consequence");
+            dlgAlert.setTitle("App Title");
+            dlgAlert.setPositiveButton("Ok",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+            dlgAlert.setCancelable(true);
+            dlgAlert.create().show();
+        }
     }
 
     private void fetchUserData(String username, String option, String value) {

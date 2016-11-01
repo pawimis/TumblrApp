@@ -18,7 +18,8 @@ class User {
     public void setName(String name) {
         this.name = name;
     }
-    public String getTitle() {
+
+    String getTitle() {
         return title;
     }
     public void setTitle(String title) {
